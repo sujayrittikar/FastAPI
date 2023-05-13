@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from typing import Optional
 
 app = FastAPI()
 
@@ -30,3 +31,25 @@ def get_student(student_id: int):
         return {
             "Invalid Student ID"
         }
+
+# Path + Query Parameters
+@app.get("/get-by-name/{student_id}")
+def get_student(
+    *,
+    student_id: int,
+    name: Optional[str] = None,
+    test: int = 0
+) -> dict:
+    if student_id not in students.keys():
+        return {
+            "Invalid Student ID"
+        }
+
+    student = students[student_id]
+
+    if student['name']==name:
+        return student
+    
+    return {
+        "Student Name Not Found"
+    }
